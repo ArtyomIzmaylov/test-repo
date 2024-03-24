@@ -1,17 +1,22 @@
-function map(arr: number[], fn: (n: number, i: number) => number): number[] {
-    let transformArray = []
+type Fn = (n: number, i: number) => any
+
+function filter(arr: number[], fn: Fn): number[] {
+    let transformArray : number[] = []
     for (let i = 0; i < arr.length; i++) {
-        transformArray.push(fn(arr[i], i))
+        if (fn(arr[i], i) === false || (fn(arr[i], i) === 0 && typeof fn(arr[i], i) ==="number" ))  {
+            continue
+        }
+        transformArray.push(arr[i])
+
     }
     return transformArray
 };
 
+const arr = [-1,1, 0,3,5,7]
+function functionArr (n : number, i : number) {
+    return n > -1
+}
 
-const myArray = [1,3,5]
-
-
-const newArray = map(myArray, (n, i) => {
-    return n+i
-})
+const newArray = filter(arr, functionArr)
 
 console.log(newArray)
