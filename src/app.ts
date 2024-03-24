@@ -1,22 +1,18 @@
-type Fn = (n: number, i: number) => any
+type Fn = (accum: number, curr: number) => number
 
-function filter(arr: number[], fn: Fn): number[] {
-    let transformArray : number[] = []
-    for (let i = 0; i < arr.length; i++) {
-        if (fn(arr[i], i) === false || (fn(arr[i], i) === 0 && typeof fn(arr[i], i) ==="number" ))  {
-            continue
-        }
-        transformArray.push(arr[i])
+function reduce(nums: number[], fn: Fn, init: number): number {
+    let result = init
 
+    for (let i =0; i < nums.length; i++) {
+        result = fn(result, nums[i])
     }
-    return transformArray
+    return result
 };
 
-const arr = [-1,1, 0,3,5,7]
-function functionArr (n : number, i : number) {
-    return n > -1
-}
+const myArray : number[] = []
 
-const newArray = filter(arr, functionArr)
+const res = reduce(myArray, (accum, curr) => {
+    return accum + curr * curr
+}, 111)
 
-console.log(newArray)
+console.log(res)
