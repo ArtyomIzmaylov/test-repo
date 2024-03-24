@@ -1,11 +1,7 @@
 
 
-const createHelloWorld = () => {
-    return () => {
-        console.log('Hello world!')
-    }
+for (let i = 10; i > 0; i--) {
+    console.log(i)
 }
 
-const f = createHelloWorld()
-f()
 
