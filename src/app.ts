@@ -1,69 +1,25 @@
-/*type F = (x: number) => number;
+type JSONValue = null | boolean | number | string | JSONValue[] | { [key: string]: JSONValue };
+type Fn = (...args: JSONValue[]) => void
 
-
-const functionsArray : any  = [function (x : any) {return x + 1}, function (x : any) {return x*2}, function (x : any) {return x**2}].reverse()
-
-
-const compose = (x : any) => {
-    let currentFunc = functionsArray[0](x);
-    for (let i = 1; i > functionsArray.length; i++) {
-        currentFunc = functionsArray[i](currentFunc)
-        //currentFunc = functionsArray[1](functionsArray[0](x)) #1
-        //currentFunc = functionsArray[2](functionsArray[1](functionsArray[0](x)))
-
-    }
-    return currentFunc
-}*/
-
-
-
-
-const functionsArray : any  = [function (x : any) {return x + 1}, function (x : any) {return x*2}, function (x : any) {return x**2}]
-
-function currentFunc(func : any) {
-    return func
-}
-
-function applyFunctions(functionsArray: any[], x: number): number {
-    let result = x;
-    for (let i = 0; i < functionsArray.length; i++) {
-        result = currentFunc(functionsArray[i])(result);
-    }
-    return result;
-}
-
-
-console.log(applyFunctions(functionsArray, 5))
-
-
-
-
-type F = (x: number) => number;
-
-function compose(functions: F[]): F {
-    functions.reverse()
-    return function(x) {
-        let result = x;
-        for (let i = 0; i < functions.length; i++) {
-            result = currentFunc(functions[i])(result);
+function cancellable(fn: Fn, args: JSONValue[] = [], t: number): Function {
+    callback(true)
+    const timer = setInterval(() => {
+        callback(true)
+    }, t)
+    function callback(flag : boolean = false) {
+        if (flag) {
+            fn(...args)
         }
-        return result;
+        else {
+            clearInterval(timer)
+        }
+
     }
+    return callback
 };
 
 
-const fm = compose(functionsArray)
-console.log(fm(10))
+const cancelFm = cancellable((x :any) => x*2, [4], 35)
+setTimeout(cancelFm, 190)
 
-
-/*
-function currentFunc(func : F) {
-    return func
-}
-
-let res1 = (x : number) => currentFunc(functionsArray[0](x))
-let res2 = (x : number) => currentFunc(functionsArray[1](res1(x)))
-let res3 = (x : number) => currentFunc(functionsArray[2](res2(x)))
-
-console.log(res3(10))
-*/
+const start = performance.now();
